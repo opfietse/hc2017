@@ -59,7 +59,7 @@ public class Filereader {
             lineCounter++;
             for (int j = 0; j < numCaches; j++) {
                 String[] s1 = lines.get(lineCounter).split(" ");
-                LatencyToCache ltc = new LatencyToCache(Integer.parseInt(s1[0], Integer.parseInt(s1[1]));
+                LatencyToCache ltc = new LatencyToCache(Integer.parseInt(s1[0]), Integer.parseInt(s1[1]));
                 ltcs[j] = ltc;
                 lineCounter++;
             }
@@ -67,38 +67,23 @@ public class Filereader {
             ep.latencyCs = ltcs;
             endpoints[endpoint] = ep;
         }
+        
+        for(int r = 0 ; r < numberOfRequests ; r++){
+        	String[] s1 = lines.get(lineCounter).split(" ");
+        	Request request = new Request();
+        	request.video = videos[Integer.parseInt(s1[0])];
+        	request.endpoint = endpoints[Integer.parseInt(s1[1])];
+        	request.numberOfViews = Integer.parseInt(s1[2]);
+        	requests[r] = request;
+        	lineCounter++;
+        }
+        
+        Model m = new Model();
+        m.cachServers = caches;
+        m.endpoints = endpoints;
+        m.videos = videos;
+        m.requests = requests;
 
-        // try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-        // String line;
-        // while ((line = br.readLine()) != null) {
-        // if (lineCounter == 0) {
-        // String[] firstLineParts = line.split(" ");
-        // numberOfVideos = Integer.parseInt(firstLineParts[0]);
-        // numberOfEndpoints = Integer.parseInt(firstLineParts[1]);
-        // numberOfRequests = Integer.parseInt(firstLineParts[2]);
-        // numberOfCaches = Integer.parseInt(firstLineParts[3]);
-        // cacheSize = Integer.parseInt(firstLineParts[4]);
-        // } else {
-        // // System.out.println(line);
-        //
-        // if (lineCounter == 1) {
-        // String[] videoSizes = line.split(" ");
-        // videos = new Video[numberOfVideos];
-        //
-        // for (int i = 0;i < numberOfVideos; i++) {
-        // videos[i] = new Video(Integer.parseInt(videoSizes[i]));
-        // }
-        // }
-        //
-        //
-        // }
-        //
-        // ++lineCounter;
-        // }
-        // } catch (IOException e) {
-        // e.printStackTrace();
-        // }
-
-        return new Model();
+        return m;
     }
 }

@@ -1,11 +1,11 @@
 package com.wehkamp.hashcode.practise;
 
 public class LatencyToCache {
-    public int identifier;
+    public int identifierCache;
     public int latency;
 
     public LatencyToCache(int i, int l) {
-        this.identifier = i;
+        this.identifierCache = i;
         this.latency = l;
     }
 }
