@@ -1,8 +1,36 @@
 package com.wehkamp.hashcode.practise;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
         Filereader fr = new Filereader();
-        System.out.println(fr.read(args[0]));
+        Model m = fr.read(args[0]);
+        List<CacheServer> usedCS = new ArrayList<CacheServer>();
+        
+        for(int i = 0 ; i < m.cachServers.length ; i++){
+        	CacheServer cs = m.cachServers[i];
+        	for(int j = 0 ; j < m.videos.length ; j++){        		
+        		if(cs.unUsedCapacity >= m.videos[j].size){
+        			cs.videos.add(m.videos[j]);
+        			cs.unUsedCapacity -= m.videos[j].size;
+        		}
+        	}
+        	
+        	usedCS.add(cs);
+        }
+        
+        System.out.println(usedCS.size());
+        
+        for(CacheServer cs : usedCS){
+        	StringBuffer sb = new StringBuffer();
+        	sb.append(cs.identifier);
+        	for(Video v : cs.videos){
+        		sb.append(" " + v.identifier);
+        	}
+        	
+        	System.out.println(sb.toString());
+        }
     }
 }

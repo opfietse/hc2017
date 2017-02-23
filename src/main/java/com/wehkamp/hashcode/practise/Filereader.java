@@ -41,7 +41,7 @@ public class Filereader {
         videos = new Video[numberOfVideos];
 
         for (int i = 0; i < numberOfVideos; i++) {
-            videos[i] = new Video(Integer.parseInt(videoSizes[i]));
+            videos[i] = new Video(i, Integer.parseInt(videoSizes[i]));
         }
 
         lineCounter = 2;
@@ -77,6 +77,10 @@ public class Filereader {
         	request.numberOfViews = Integer.parseInt(s1[2]);
         	requests[r] = request;
         	lineCounter++;
+        }
+        
+        for(int i = 0 ; i < numberOfCaches ; i ++){
+        	caches[i] = new CacheServer(i, cacheSize);
         }
         
         Model m = new Model();
