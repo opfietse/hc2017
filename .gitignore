@@ -3,6 +3,9 @@
 
 .gradle/
 build/
+<<<<<<< HEAD
 /bin/
 
 *.in
+=======
+>>>>>>> d547e9cf5f9196a6e920e80deafebab75ee6c1e2

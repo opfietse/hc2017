@@ -25,13 +25,13 @@ public class Filereader {
                 } else {
                     //System.out.println(line);
 
-                    if (lineCounter == 1) {
-                        pizzaParts = new PizzaPart[rows][cols];
-                    }
-
-                    for (int i = 0; i < cols; i++) {
-                        pizzaParts[lineCounter - 1][i] = line.charAt(i) == 'T' ? PizzaPart.TOMATO : PizzaPart.MUSHROOM;
-                    }
+//                    if (lineCounter == 1) {
+//                        pizzaParts = new PizzaPart[rows][cols];
+//                    }
+//
+//                    for (int i = 0; i < cols; i++) {
+//                        pizzaParts[lineCounter - 1][i] = line.charAt(i) == 'T' ? PizzaPart.TOMATO : PizzaPart.MUSHROOM;
+//                    }
                 }
 
                 ++lineCounter;

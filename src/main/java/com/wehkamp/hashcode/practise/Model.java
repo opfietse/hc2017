@@ -7,4 +7,10 @@ public class Model {
     public Video[] videos;
     public CachServer[] cachServers;
     public Request[] requests;
+
+    public Model(Endpoint[] endpoints, Video[] videos, CachServer[] cachServers, Request[] requests) {
+        this.endpoints = endpoints;
+        this.videos = videos;
+
+    }
 }
