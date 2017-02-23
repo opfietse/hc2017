@@ -40,6 +40,6 @@ public class Filereader {
             e.printStackTrace();
         }
 
-        return new Model(rows, cols, minIngredients, maxSize, pizzaParts);
+        return new Model();
     }
 }
