@@ -13,11 +13,6 @@ public class Filereader {
         int numberOfCaches = 0;
         int cacheSize = 0;
 
-        Video[] videos = new Video[numberOfVideos];
-        CacheServer[] caches = new CacheServer[numberOfCaches];
-        Request[] requests = new Request[numberOfRequests];
-        Endpoint[] endpoints = new Endpoint[numberOfEndpoints];
-
         List<String> lines = new ArrayList<String>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
@@ -35,6 +30,12 @@ public class Filereader {
         numberOfRequests = Integer.parseInt(firstLineParts[2]);
         numberOfCaches = Integer.parseInt(firstLineParts[3]);
         cacheSize = Integer.parseInt(firstLineParts[4]);
+
+        Video[] videos = new Video[numberOfVideos];
+        CacheServer[] caches = new CacheServer[numberOfCaches];
+        Request[] requests = new Request[numberOfRequests];
+        Endpoint[] endpoints = new Endpoint[numberOfEndpoints];
+
 
         String[] videoSizes = lines.get(1).split(" ");
         videos = new Video[numberOfVideos];
