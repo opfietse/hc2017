@@ -9,10 +9,13 @@ public class Main {
         Model m = fr.read(args[0]);
         List<CacheServer> usedCS = new ArrayList<CacheServer>();
         
+        
+        
+        
         for(int i = 0 ; i < m.cachServers.length ; i++){
         	CacheServer cs = m.cachServers[i];
         	for(int j = 0 ; j < m.videos.length ; j++){        		
-        		if(cs.unUsedCapacity >= m.videos[j].size){
+        		if(cs.unUsedCapacity >= m.videos[j].size && isVideoUsed(m.videos[j], m.requests)){
         			cs.videos.add(m.videos[j]);
         			cs.unUsedCapacity -= m.videos[j].size;
         		}
@@ -32,5 +35,16 @@ public class Main {
         	
         	System.out.println(sb.toString());
         }
+    }
+    
+    public static boolean isVideoUsed(Video v, Request[] requests){
+    	
+    	for(int i = 0; i < requests.length ; i++){
+    		if(requests[i].video.identifier == v.identifier){
+    			return true;
+    		}
+    	}
+    	
+    	return false;
     }
 }
