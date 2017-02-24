@@ -53,23 +53,14 @@ public class Main {
             video.uses = video.uses + requests[i].numberOfViews;
         }
 
-        for (int i = 0; i < videos.length; i++) {
-            if (i < videos.length - 1) {
-                if (videos[i].uses < videos[i + 1].uses) {
-                    Video vt = videos[i];
-                    videos[i] = videos[i + 1];
-                    videos[i + 1] = vt;
-                }
-            }
-        }
-
-
-        for (int i = 0; i < videos.length; i++) {
-            if (i < videos.length - 1) {
-                if (videos[i].uses < videos[i + 1].uses) {
-                    Video vt = videos[i];
-                    videos[i] = videos[i + 1];
-                    videos[i + 1] = vt;
+        for (int count = 0; count < videos.length; count++) {
+            for (int i = 0; i < videos.length; i++) {
+                if (i < videos.length - 1) {
+                    if (videos[i].uses < videos[i + 1].uses) {
+                        Video vt = videos[i];
+                        videos[i] = videos[i + 1];
+                        videos[i + 1] = vt;
+                    }
                 }
             }
         }
