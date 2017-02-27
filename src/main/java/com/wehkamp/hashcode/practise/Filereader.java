@@ -31,17 +31,16 @@ public class Filereader {
         numberOfCaches = Integer.parseInt(firstLineParts[3]);
         cacheSize = Integer.parseInt(firstLineParts[4]);
 
-        Video[] videos = new Video[numberOfVideos];
-        CacheServer[] caches = new CacheServer[numberOfCaches];
-        Request[] requests = new Request[numberOfRequests];
-        Endpoint[] endpoints = new Endpoint[numberOfEndpoints];
+        List<Video> videos = new ArrayList<Video>();
+        List<CacheServer> caches = new ArrayList<CacheServer>();
+        List<Request> requests = new ArrayList<Request>();
+        List<Endpoint> endpoints = new ArrayList<Endpoint>();
 
 
         String[] videoSizes = lines.get(1).split(" ");
-        videos = new Video[numberOfVideos];
 
         for (int i = 0; i < numberOfVideos; i++) {
-            videos[i] = new Video(i, Integer.parseInt(videoSizes[i]));
+            videos.add( new Video(i, Integer.parseInt(videoSizes[i])));
         }
 
         lineCounter = 2;
@@ -55,32 +54,32 @@ public class Filereader {
             Endpoint ep = new Endpoint();
             ep.latencyDc = dcLatency;
 
-            LatencyToCache[] ltcs = new LatencyToCache[numCaches];
+            List<LatencyToCache> ltcs = new ArrayList<LatencyToCache>();
 
             lineCounter++;
             for (int j = 0; j < numCaches; j++) {
                 String[] s1 = lines.get(lineCounter).split(" ");
                 LatencyToCache ltc = new LatencyToCache(Integer.parseInt(s1[0]), Integer.parseInt(s1[1]));
-                ltcs[j] = ltc;
+                ltcs.add(ltc);
                 lineCounter++;
             }
 
             ep.latencyCs = ltcs;
-            endpoints[endpoint] = ep;
+            endpoints.add(ep);
         }
         
         for(int r = 0 ; r < numberOfRequests ; r++){
         	String[] s1 = lines.get(lineCounter).split(" ");
         	Request request = new Request();
-        	request.video = videos[Integer.parseInt(s1[0])];
-        	request.endpoint = endpoints[Integer.parseInt(s1[1])];
+        	request.video = videos.get(Integer.parseInt(s1[0]));
+        	request.endpoint = endpoints.get(Integer.parseInt(s1[1]));
         	request.numberOfViews = Integer.parseInt(s1[2]);
-        	requests[r] = request;
+        	requests.add(request);
         	lineCounter++;
         }
         
         for(int i = 0 ; i < numberOfCaches ; i ++){
-        	caches[i] = new CacheServer(i, cacheSize);
+        	caches.add(new CacheServer(i, cacheSize));
         }
         
         Model m = new Model();

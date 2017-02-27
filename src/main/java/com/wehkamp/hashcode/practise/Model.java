@@ -1,34 +1,35 @@
 package com.wehkamp.hashcode.practise;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class Model {
-    public Endpoint[] endpoints;
-    public Video[] videos;
-    public CacheServer[] cachServers;
-    public Request[] requests;
+    public List<Endpoint> endpoints;
+    public List<Video> videos;
+    public List<CacheServer> cachServers;
+    public List<Request> requests;
 
     public Model() {
 
     }
 
-
-    public Model(Endpoint[] endpoints, Video[] videos, CacheServer[] cachServers, Request[] requests) {
+    public Model(List<Endpoint> endpoints, List<Video> videos, List<CacheServer> cachServers, List<Request> requests) {
         this.endpoints = endpoints;
         this.videos = videos;
     }
 
     @Override
     public String toString() {
-        return "e9 " + endpoints[9].latencyDc +  ", " + endpoints[9].latencyCs.length + ", " + endpoints[9].latencyCs[2].latency + ", " + requests[9].numberOfViews;
+        return "e9 " + endpoints.get(9).latencyDc + ", " + endpoints.get(9).latencyCs.size() + ", " + endpoints.get(9).latencyCs.get(2).latency + ", "
+            + requests.get(9).numberOfViews;
     }
-//    @Override
-//    public String toString() {
-//        return "Model{" +
-//                "endpoints=" + Arrays.toString(endpoints) +
-//                ", videos=" + Arrays.toString(videos) +
-//                ", cachServers=" + Arrays.toString(cachServers) +
-//                ", requests=" + Arrays.toString(requests) +
-//                '}';
-//    }
+    // @Override
+    // public String toString() {
+    // return "Model{" +
+    // "endpoints=" + Arrays.toString(endpoints) +
+    // ", videos=" + Arrays.toString(videos) +
+    // ", cachServers=" + Arrays.toString(cachServers) +
+    // ", requests=" + Arrays.toString(requests) +
+    // '}';
+    // }
 }

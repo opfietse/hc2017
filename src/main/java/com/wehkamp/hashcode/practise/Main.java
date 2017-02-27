@@ -1,6 +1,7 @@
 package com.wehkamp.hashcode.practise;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Main {
@@ -9,15 +10,16 @@ public class Main {
         Model m = fr.read(args[0]);
         List<CacheServer> usedCS = new ArrayList<CacheServer>();
         
+      //  m.videos = filterUnused(m.videos, m.requests);
+      //  m.videos = filterTooBig(m.videos, m.cachServers);
+
+        sort(m.videos, m.requests, m.endpoints, m.cachServers);
         
-        sort(m.videos, m.requests);
-        
-        for(int i = 0 ; i < m.cachServers.length ; i++){
-        	CacheServer cs = m.cachServers[i];
-        	for(int j = 0 ; j < m.videos.length ; j++){        		
-        		if(cs.unUsedCapacity >= m.videos[j].size && isVideoUsed(m.videos[j], m.requests)){
-        			cs.videos.add(m.videos[j]);
-        			cs.unUsedCapacity -= m.videos[j].size;
+        for(CacheServer cs: m.cachServers){
+        	for(Video video: m.videos) {
+        		if(cs.unUsedCapacity >= video.size){
+        			cs.videos.add(video);
+        			cs.unUsedCapacity -= video.size;
         		}
         	}
         	
@@ -36,33 +38,76 @@ public class Main {
         	System.out.println(sb.toString());
         }
     }
-    
-    public static boolean isVideoUsed(Video v, Request[] requests){
-    	for(int i = 0; i < requests.length ; i++){
-    		if(requests[i].video.identifier == v.identifier){
-    			return true;
-    		}
+
+    public static List<Video> filterUnused(List<Video> videos, List<Request> requests) {
+        List<Video> newVids = new ArrayList<Video>();
+        for (Video video: videos) {
+            if (isVideoUsed(video, requests)) {
+                newVids.add(video);
+            }
+        }
+
+        return newVids;
+    }
+
+    public static List<Video> filterTooBig(List<Video> videos, List<CacheServer> caches) {
+        List<Video> newVids = new ArrayList<Video>();
+        if (caches.size() == 0) return videos;
+
+        for (Video video: videos) {
+            if (video.size < caches.get(0).totalCapacity) {
+                newVids.add(video);
+            }
+        }
+
+        return newVids;
+    }
+
+    public static boolean isVideoUsedFromEndpointWithCacheAndFits(Video v, List<Request> requests, List<Endpoint> endpoints, List<CacheServer> caches) {
+    	for(Request request: requests){
+    	    Endpoint endpoint = request.endpoint;
+
+    	    if (endpoint.latencyCs.size() > 0) {
+                if (request.video.identifier == v.identifier) {
+                    return true;
+                }
+            }
     	}
     	
     	return false;
     }
 
-    public static void sort(Video[] videos, Request[] requests) {
-        for (int i = 0; i < requests.length; i++) {
-            Video video = videos[requests[i].video.identifier];
-            video.uses = video.uses + requests[i].numberOfViews;
-        }
+    public static boolean isVideoUsed(Video v, List<Request> requests){
+    	for(Request request: requests){
+    		if(request.video.identifier == v.identifier){
+    			return true;
+    		}
+    	}
 
-        for (int count = 0; count < videos.length; count++) {
-            for (int i = 0; i < videos.length; i++) {
-                if (i < videos.length - 1) {
-                    if (videos[i].uses < videos[i + 1].uses) {
-                        Video vt = videos[i];
-                        videos[i] = videos[i + 1];
-                        videos[i + 1] = vt;
-                    }
-                }
+    	return false;
+    }
+
+    public static void sort(List<Video> videos, List<Request> requests, List<Endpoint>endpoints, List<CacheServer> caches) {
+        for (Request request: requests) {
+            Video video = videos.get(request.video.identifier);
+
+            if (isVideoUsedFromEndpointWithCacheAndFits(video, requests, endpoints, caches)) {
+                video.uses = video.uses + request.numberOfViews;
             }
         }
+
+        Collections.sort(videos);
+
+//        for (int count = 0; count < videos.length; count++) {
+//            for (int i = 0; i < videos.length; i++) {
+//                if (i < videos.length - 1) {
+//                    if (videos[i].uses < videos[i + 1].uses) {
+//                        Video vt = videos[i];
+//                        videos[i] = videos[i + 1];
+//                        videos[i + 1] = vt;
+//                    }
+//                }
+//            }
+//        }
     }
 }
