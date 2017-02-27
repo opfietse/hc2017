@@ -9,33 +9,33 @@ public class Main {
         Filereader fr = new Filereader();
         Model m = fr.read(args[0]);
         List<CacheServer> usedCS = new ArrayList<CacheServer>();
-        
-      //  m.videos = filterUnused(m.videos, m.requests);
-      //  m.videos = filterTooBig(m.videos, m.cachServers);
+
+        // m.videos = filterUnused(m.videos, m.requests);
+        // m.videos = filterTooBig(m.videos, m.cachServers);
 
         sort(m.videos, m.requests, m.endpoints, m.cachServers);
-        
-        for(CacheServer cs: m.cachServers){
-        	for(Video video: m.videos) {
-        		if(cs.unUsedCapacity >= video.size){
-        			cs.videos.add(video);
-        			cs.unUsedCapacity -= video.size;
-        		}
-        	}
-        	
-        	usedCS.add(cs);
+
+        for (CacheServer cs: m.cachServers) {
+            for (Video video: m.videos) {
+                if (cs.unUsedCapacity >= video.size) {
+                    cs.videos.add(video);
+                    cs.unUsedCapacity -= video.size;
+                }
+            }
+
+            usedCS.add(cs);
         }
-        
+
         System.out.println(usedCS.size());
-        
-        for(CacheServer cs : usedCS){
-        	StringBuffer sb = new StringBuffer();
-        	sb.append(cs.identifier);
-        	for(Video v : cs.videos){
-        		sb.append(" " + v.identifier);
-        	}
-        	
-        	System.out.println(sb.toString());
+
+        for (CacheServer cs: usedCS) {
+            StringBuffer sb = new StringBuffer();
+            sb.append(cs.identifier);
+            for (Video v: cs.videos) {
+                sb.append(" " + v.identifier);
+            }
+
+            System.out.println(sb.toString());
         }
     }
 
@@ -52,7 +52,8 @@ public class Main {
 
     public static List<Video> filterTooBig(List<Video> videos, List<CacheServer> caches) {
         List<Video> newVids = new ArrayList<Video>();
-        if (caches.size() == 0) return videos;
+        if (caches.size() == 0)
+            return videos;
 
         for (Video video: videos) {
             if (video.size < caches.get(0).totalCapacity) {
@@ -64,30 +65,30 @@ public class Main {
     }
 
     public static boolean isVideoUsedFromEndpointWithCacheAndFits(Video v, List<Request> requests, List<Endpoint> endpoints, List<CacheServer> caches) {
-    	for(Request request: requests){
-    	    Endpoint endpoint = request.endpoint;
+        for (Request request: requests) {
+            Endpoint endpoint = request.endpoint;
 
-    	    if (endpoint.latencyCs.size() > 0) {
+            if (endpoint.latencyCs.size() > 0) {
                 if (request.video.identifier == v.identifier) {
                     return true;
                 }
             }
-    	}
-    	
-    	return false;
+        }
+
+        return false;
     }
 
-    public static boolean isVideoUsed(Video v, List<Request> requests){
-    	for(Request request: requests){
-    		if(request.video.identifier == v.identifier){
-    			return true;
-    		}
-    	}
+    public static boolean isVideoUsed(Video v, List<Request> requests) {
+        for (Request request: requests) {
+            if (request.video.identifier == v.identifier) {
+                return true;
+            }
+        }
 
-    	return false;
+        return false;
     }
 
-    public static void sort(List<Video> videos, List<Request> requests, List<Endpoint>endpoints, List<CacheServer> caches) {
+    public static void sort(List<Video> videos, List<Request> requests, List<Endpoint> endpoints, List<CacheServer> caches) {
         for (Request request: requests) {
             Video video = videos.get(request.video.identifier);
 
@@ -98,16 +99,20 @@ public class Main {
 
         Collections.sort(videos);
 
-//        for (int count = 0; count < videos.length; count++) {
-//            for (int i = 0; i < videos.length; i++) {
-//                if (i < videos.length - 1) {
-//                    if (videos[i].uses < videos[i + 1].uses) {
-//                        Video vt = videos[i];
-//                        videos[i] = videos[i + 1];
-//                        videos[i + 1] = vt;
-//                    }
-//                }
-//            }
+//        for (Video video: videos) {
+//            System.out.println(video.uses);
 //        }
+
+        // for (int count = 0; count < videos.length; count++) {
+        // for (int i = 0; i < videos.length; i++) {
+        // if (i < videos.length - 1) {
+        // if (videos[i].uses < videos[i + 1].uses) {
+        // Video vt = videos[i];
+        // videos[i] = videos[i + 1];
+        // videos[i + 1] = vt;
+        // }
+        // }
+        // }
+        // }
     }
 }

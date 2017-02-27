@@ -14,11 +14,11 @@ public class Video implements Comparable<Video> {
 	@Override
 	public int compareTo(Video o) {
 		if (this.uses > o.uses) {
-			return 1;
+			return -1;
 		} else if (this.uses == o.uses) {
 			return 0;
 		} else {
-			return -1;
+			return 1;
 		}
 	}
 }
